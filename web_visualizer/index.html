@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Recommendation Engine - DSA Visualizer</title>
+    <!-- Google Fonts: Inter and Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation Bar -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="logo-icon">⚡</span>
+                <div class="logo-text">
+                    <h1>RECO-ENGINE</h1>
+                    <span class="subtitle">DSA Portfolio Proof of Work</span>
+                </div>
+            </div>
+            <div class="header-controls">
+                <div class="user-selector-wrapper">
+                    <label for="userSelect">Active Customer:</label>
+                    <select id="userSelect" class="form-control select-dark">
+                        <!-- Loaded dynamically -->
+                    </select>
+                </div>
+                <button id="btnReset" class="btn btn-secondary">🔄 Reset Data</button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="app-body">
+            <!-- Left Panel: Interactive Inputs & Tools -->
+            <section class="side-panel left-panel">
+                <!-- Search Trie Card -->
+                <div class="card glass-card">
+                    <div class="card-header">
+                        <h3>🔍 Search Autocomplete (Trie Tree)</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="search-input-group">
+                            <input type="text" id="searchInput" placeholder="Type to search (e.g., lap, sh, game, co)..." class="form-control" autocomplete="off">
+                            <div id="autocompleteDropdown" class="autocomplete-dropdown hidden"></div>
+                        </div>
+                        <p class="card-info-text">Trie prefix lookup runs in <strong>O(L)</strong> time, fetching autocomplete paths from character nodes.</p>
+                    </div>
+                </div>
+
+                <!-- Similarity Calculator Card -->
+                <div class="card glass-card mt-3">
+                    <div class="card-header">
+                        <h3>📐 Tag Similarity (Jaccard Index)</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="simProductA">Product A:</label>
+                            <select id="simProductA" class="form-control select-dark"></select>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="simProductB">Product B:</label>
+                            <select id="simProductB" class="form-control select-dark"></select>
+                        </div>
+                        <button id="btnCalcSimilarity" class="btn btn-primary btn-block mt-3">Calculate Jaccard Score</button>
+                        
+                        <!-- Similarity result display -->
+                        <div id="similarityResult" class="similarity-result-box hidden">
+                            <div class="score-display">
+                                <span class="score-label">Jaccard Score:</span>
+                                <span id="jaccardScore" class="score-val">0.0%</span>
+                            </div>
+                            <div class="set-details mt-2">
+                                <p><strong>Intersection (A ∩ B):</strong> <span id="setIntersection" class="tag-list-display"></span></p>
+                                <p class="mt-1"><strong>Union (A ∪ B):</strong> <span id="setUnion" class="tag-list-display"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cart Management Card -->
+                <div class="card glass-card mt-3">
+                    <div class="card-header">
+                        <h3>🛒 Active Cart & Actions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="cartDisplayList" class="cart-items-list">
+                            <!-- Populated dynamically -->
+                            <p class="empty-text">Cart is empty.</p>
+                        </div>
+                        <div class="cart-checkout-box mt-3">
+                            <div class="cart-total">
+                                <span>Total Value:</span>
+                                <span id="cartTotalVal" class="price-val">$0.00</span>
+                            </div>
+                            <button id="btnCheckout" class="btn btn-success btn-block mt-2">💳 Checkout & Update Graph</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Center Panel: Large Canvas Graph and Binary Tree Visualizers -->
+            <section class="center-panel">
+                <div class="visualizer-tabs">
+                    <button id="tabGraph" class="tab-btn active">🕸️ User-Product Interaction Graph</button>
+                    <button id="tabHeap" class="tab-btn">🌳 Binary Max-Heap Tree</button>
+                </div>
+
+                <div class="canvas-container glass-card">
+                    <!-- Graph canvas -->
+                    <div id="graphContainer" class="canvas-wrapper">
+                        <canvas id="graphCanvas"></canvas>
+                        <div class="canvas-legend">
+                            <span class="legend-item"><span class="legend-dot user-dot"></span> User Node</span>
+                            <span class="legend-item"><span class="legend-dot product-dot"></span> Product Node</span>
+                            <span class="legend-item"><span class="legend-dot active-dot"></span> Selected Node</span>
+                        </div>
+                        <div class="canvas-instructions">Drag nodes to rearrange. Double-click product to view similar items.</div>
+                    </div>
+
+                    <!-- Heap canvas -->
+                    <div id="heapContainer" class="canvas-wrapper hidden">
+                        <canvas id="heapCanvas"></canvas>
+                        <div class="canvas-instructions">Displays the Max-Heap structure used to sort candidate scores. Root is the top recommendation.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: Final Output & Algorithm Logs -->
+            <section class="side-panel right-panel">
+                <!-- Recommendations Output Card -->
+                <div class="card glass-card">
+                    <div class="card-header header-glow-green">
+                        <h3>🎁 Top Recommended Products</h3>
+                    </div>
+                    <div class="card-body">
+                        <button id="btnGetRecs" class="btn btn-glow btn-block">⚡ Compute Hybrid Recommendations</button>
+                        
+                        <div id="recsOutputList" class="recs-list mt-3">
+                            <!-- Loaded dynamically -->
+                            <p class="info-text">Click the button above to run the hybrid engine.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Algorithm Console Logger -->
+                <div class="card glass-card mt-3 log-card">
+                    <div class="card-header">
+                        <h3>⌨️ Step-by-Step Algorithm Logs</h3>
+                    </div>
+                    <div class="card-body terminal-body">
+                        <div id="terminalConsole" class="terminal-console">
+                            <div class="terminal-line system-line">[SYSTEM] Reco-Engine Visualizer loaded.</div>
+                            <div class="terminal-line system-line">[SYSTEM] Awaiting user instructions...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Script loading -->
+    <script src="app.js"></script>
+</body>
+</html>

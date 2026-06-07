@@ -1,0 +1,40 @@
+# Compiled python files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+react_frontend/dist/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# Node dependencies
+node_modules/
+react_frontend/node_modules/
+
+# IDE config files
+.idea/
+.vscode/
+*.suo
+*.sln
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Output directory files (except gitkeep)
+outputs/*
+!outputs/.gitkeep

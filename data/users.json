@@ -1,0 +1,44 @@
+[
+  {
+    "id": "U001",
+    "name": "Alice Smith",
+    "search_history": ["headphones", "earbuds", "noise canceling"],
+    "cart": ["P103"],
+    "purchase_history": ["P101", "P105"]
+  },
+  {
+    "id": "U002",
+    "name": "Bob Johnson",
+    "search_history": ["gaming keyboard", "gaming monitor", "mouse"],
+    "cart": ["P102"],
+    "purchase_history": ["P104"]
+  },
+  {
+    "id": "U003",
+    "name": "Charlie Brown",
+    "search_history": ["programming books", "dsa", "python book"],
+    "cart": ["P302"],
+    "purchase_history": ["P301", "P303"]
+  },
+  {
+    "id": "U004",
+    "name": "Diana Prince",
+    "search_history": ["jacket", "sports shoes", "casual sneakers"],
+    "cart": [],
+    "purchase_history": ["P202", "P204"]
+  },
+  {
+    "id": "U005",
+    "name": "Ethan Hunt",
+    "search_history": ["coffee maker", "espresso machine", "electric kettle"],
+    "cart": ["P403"],
+    "purchase_history": ["P401", "P105"]
+  },
+  {
+    "id": "U006",
+    "name": "Fiona Gallagher",
+    "search_history": ["minimalist watch", "denim jeans", "sneakers"],
+    "cart": ["P203"],
+    "purchase_history": ["P201", "P205"]
+  }
+]

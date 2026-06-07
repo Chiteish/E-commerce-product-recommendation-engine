@@ -1,0 +1,138 @@
+[
+  {
+    "id": "P101",
+    "name": "Wireless Noise-Canceling Headphones",
+    "category": "Electronics",
+    "price": 199.99,
+    "tags": ["wireless", "audio", "noise-canceling", "bluetooth", "premium"],
+    "rating": 4.7
+  },
+  {
+    "id": "P102",
+    "name": "Mechanical Gaming Keyboard",
+    "category": "Electronics",
+    "price": 89.99,
+    "tags": ["gaming", "keyboard", "rgb", "wired", "mechanical"],
+    "rating": 4.5
+  },
+  {
+    "id": "P103",
+    "name": "Ergonomic Wireless Mouse",
+    "category": "Electronics",
+    "price": 49.99,
+    "tags": ["wireless", "mouse", "ergonomic", "bluetooth", "office"],
+    "rating": 4.3
+  },
+  {
+    "id": "P104",
+    "name": "Ultra-Wide Gaming Monitor 34-inch",
+    "category": "Electronics",
+    "price": 449.99,
+    "tags": ["gaming", "monitor", "ultrawide", "display", "4k"],
+    "rating": 4.8
+  },
+  {
+    "id": "P105",
+    "name": "USB-C Portable Power Bank",
+    "category": "Electronics",
+    "price": 29.99,
+    "tags": ["portable", "power", "usb-c", "charger", "travel"],
+    "rating": 4.4
+  },
+  {
+    "id": "P201",
+    "name": "Slim-Fit Denim Jeans",
+    "category": "Fashion",
+    "price": 59.99,
+    "tags": ["denim", "jeans", "slim-fit", "casual", "apparel"],
+    "rating": 4.1
+  },
+  {
+    "id": "P202",
+    "name": "Water-Resistant Windbreaker Jacket",
+    "category": "Fashion",
+    "price": 79.99,
+    "tags": ["jacket", "water-resistant", "windbreaker", "outerwear", "travel"],
+    "rating": 4.6
+  },
+  {
+    "id": "P203",
+    "name": "Classic White Leather Sneakers",
+    "category": "Fashion",
+    "price": 69.99,
+    "tags": ["sneakers", "leather", "casual", "footwear", "white"],
+    "rating": 4.2
+  },
+  {
+    "id": "P204",
+    "name": "Runners Athletic Sports Shoes",
+    "category": "Fashion",
+    "price": 89.99,
+    "tags": ["shoes", "running", "athletic", "footwear", "breathable"],
+    "rating": 4.5
+  },
+  {
+    "id": "P205",
+    "name": "Stainless Steel Minimalist Watch",
+    "category": "Fashion",
+    "price": 129.99,
+    "tags": ["watch", "minimalist", "accessory", "steel", "analog"],
+    "rating": 4.4
+  },
+  {
+    "id": "P301",
+    "name": "Data Structures & Algorithms Made Easy",
+    "category": "Books",
+    "price": 34.99,
+    "tags": ["dsa", "programming", "education", "textbook", "algorithms"],
+    "rating": 4.9
+  },
+  {
+    "id": "P302",
+    "name": "The Pragmatic Programmer",
+    "category": "Books",
+    "price": 39.99,
+    "tags": ["programming", "career", "best-seller", "software", "development"],
+    "rating": 4.9
+  },
+  {
+    "id": "P303",
+    "name": "Introduction to Artificial Intelligence",
+    "category": "Books",
+    "price": 49.99,
+    "tags": ["ai", "machine-learning", "textbook", "python", "education"],
+    "rating": 4.6
+  },
+  {
+    "id": "P304",
+    "name": "Atomic Habits",
+    "category": "Books",
+    "price": 16.99,
+    "tags": ["self-help", "best-seller", "habits", "productivity", "psychology"],
+    "rating": 4.8
+  },
+  {
+    "id": "P401",
+    "name": "Programmable Espresso Machine",
+    "category": "Home & Kitchen",
+    "price": 249.99,
+    "tags": ["espresso", "coffee", "machine", "kitchen", "premium"],
+    "rating": 4.7
+  },
+  {
+    "id": "P402",
+    "name": "High-Speed Countertop Blender",
+    "category": "Home & Kitchen",
+    "price": 99.99,
+    "tags": ["blender", "smoothie", "juicer", "kitchen", "appliance"],
+    "rating": 4.3
+  },
+  {
+    "id": "P403",
+    "name": "Electric Gooseneck Kettle",
+    "category": "Home & Kitchen",
+    "price": 54.99,
+    "tags": ["kettle", "electric", "tea", "coffee", "kitchen"],
+    "rating": 4.5
+  }
+]
