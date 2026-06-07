@@ -425,6 +425,11 @@ export default function App() {
   const [searchPrefix, setSearchPrefix] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
+  // Jaccard similarity calculator state
+  const [simProductA, setSimProductA] = useState("P101");
+  const [simProductB, setSimProductB] = useState("P103");
+  const [jaccardResult, setJaccardResult] = useState(null);
+
   // Logging lines state
   const [logs, setLogs] = useState([
     { text: "Welcome to the FastAPI + React Recommendation Engine!", type: "sys" },
@@ -451,23 +456,23 @@ export default function App() {
         
         // Populate standard catalog from recommended endpoints
         setProducts([
-          { id: "P101", title: "Wireless Noise-Canceling Headphones", category: "Electronics" },
-          { id: "P102", title: "Mechanical Gaming Keyboard", category: "Electronics" },
-          { id: "P103", title: "Ergonomic Wireless Mouse", category: "Electronics" },
-          { id: "P104", title: "Ultra-Wide Gaming Monitor 34-inch", category: "Electronics" },
-          { id: "P105", title: "USB-C Portable Power Bank", category: "Electronics" },
-          { id: "P201", title: "Slim-Fit Denim Jeans", category: "Fashion" },
-          { id: "P202", title: "Water-Resistant Windbreaker Jacket", category: "Fashion" },
-          { id: "P203", title: "Classic White Leather Sneakers", category: "Fashion" },
-          { id: "P204", title: "Runners Athletic Sports Shoes", category: "Fashion" },
-          { id: "P205", title: "Stainless Steel Minimalist Watch", category: "Fashion" },
-          { id: "P301", title: "Data Structures & Algorithms Made Easy", category: "Books" },
-          { id: "P302", title: "The Pragmatic Programmer", category: "Books" },
-          { id: "P303", title: "Introduction to Artificial Intelligence", category: "Books" },
-          { id: "P304", title: "Atomic Habits", category: "Books" },
-          { id: "P401", title: "Programmable Espresso Machine", category: "Home & Kitchen" },
-          { id: "P402", title: "High-Speed Countertop Blender", category: "Home & Kitchen" },
-          { id: "P403", title: "Electric Gooseneck Kettle", category: "Home & Kitchen" }
+          { id: "P101", title: "Wireless Noise-Canceling Headphones", category: "Electronics", tags: ["wireless", "audio", "noise-canceling", "bluetooth", "premium"] },
+          { id: "P102", title: "Mechanical Gaming Keyboard", category: "Electronics", tags: ["gaming", "keyboard", "rgb", "wired", "mechanical"] },
+          { id: "P103", title: "Ergonomic Wireless Mouse", category: "Electronics", tags: ["wireless", "mouse", "ergonomic", "bluetooth", "office"] },
+          { id: "P104", title: "Ultra-Wide Gaming Monitor 34-inch", category: "Electronics", tags: ["gaming", "monitor", "ultrawide", "display", "4k"] },
+          { id: "P105", title: "USB-C Portable Power Bank", category: "Electronics", tags: ["portable", "power", "usb-c", "charger", "travel"] },
+          { id: "P201", title: "Slim-Fit Denim Jeans", category: "Fashion", tags: ["denim", "jeans", "slim-fit", "casual", "apparel"] },
+          { id: "P202", title: "Water-Resistant Windbreaker Jacket", category: "Fashion", tags: ["jacket", "water-resistant", "windbreaker", "outerwear", "travel"] },
+          { id: "P203", title: "Classic White Leather Sneakers", category: "Fashion", tags: ["sneakers", "leather", "casual", "footwear", "white"] },
+          { id: "P204", title: "Runners Athletic Sports Shoes", category: "Fashion", tags: ["shoes", "running", "athletic", "footwear", "breathable"] },
+          { id: "P205", title: "Stainless Steel Minimalist Watch", category: "Fashion", tags: ["watch", "minimalist", "accessory", "steel", "analog"] },
+          { id: "P301", title: "Data Structures & Algorithms Made Easy", category: "Books", tags: ["dsa", "programming", "education", "textbook", "algorithms"] },
+          { id: "P302", title: "The Pragmatic Programmer", category: "Books", tags: ["programming", "career", "best-seller", "software", "development"] },
+          { id: "P303", title: "Introduction to Artificial Intelligence", category: "Books", tags: ["ai", "machine-learning", "textbook", "python", "education"] },
+          { id: "P304", title: "Atomic Habits", category: "Books", tags: ["self-help", "best-seller", "habits", "productivity", "psychology"] },
+          { id: "P401", title: "Programmable Espresso Machine", category: "Home & Kitchen", tags: ["espresso", "coffee", "machine", "kitchen", "premium"] },
+          { id: "P402", title: "High-Speed Countertop Blender", category: "Home & Kitchen", tags: ["blender", "smoothie", "juicer", "kitchen", "appliance"] },
+          { id: "P403", title: "Electric Gooseneck Kettle", category: "Home & Kitchen", tags: ["kettle", "electric", "tea", "coffee", "kitchen"] }
         ]);
 
         // Setup base purchases layout links for network graph
@@ -541,6 +546,28 @@ export default function App() {
     setSearchPrefix(term);
     setSuggestions([]);
     addLog(`Trie prefix node matched autocomplete query: "${term}"`, "alg");
+  };
+
+  const calculateJaccard = (pidA, pidB) => {
+    const prodA = products.find(p => p.id === pidA);
+    const prodB = products.find(p => p.id === pidB);
+    if (!prodA || !prodB) return;
+    
+    const tagsA = new Set(prodA.tags || []);
+    const tagsB = new Set(prodB.tags || []);
+    
+    const intersection = [...tagsA].filter(x => tagsB.has(x));
+    const union = [...new Set([...tagsA, ...tagsB])];
+    
+    const score = union.length > 0 ? intersection.length / union.length : 0;
+    
+    setJaccardResult({
+      score,
+      intersection,
+      union
+    });
+    
+    addLog(`Calculated Jaccard similarity between [${pidA}] and [${pidB}] = ${score.toFixed(4)}`, "alg");
   };
 
   return (
@@ -637,6 +664,63 @@ export default function App() {
             <p style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '8px' }}>
               Probability rate of injecting a novel random product.
             </p>
+          </div>
+
+          {/* Jaccard Similarity Card */}
+          <div className="glass-card">
+            <h3 className="card-title">📐 Tag Similarity (Jaccard Index)</h3>
+            <div className="form-group">
+              <label>Product A:</label>
+              <select 
+                value={simProductA}
+                onChange={(e) => setSimProductA(e.target.value)}
+                className="form-control"
+                style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-color)', color: 'white' }}
+              >
+                {products.map(p => (
+                  <option key={p.id} value={p.id}>{p.title} ({p.id})</option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group" style={{ marginTop: '8px' }}>
+              <label>Product B:</label>
+              <select 
+                value={simProductB}
+                onChange={(e) => setSimProductB(e.target.value)}
+                className="form-control"
+                style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-color)', color: 'white' }}
+              >
+                {products.map(p => (
+                  <option key={p.id} value={p.id}>{p.title} ({p.id})</option>
+                ))}
+              </select>
+            </div>
+            <button 
+              onClick={() => calculateJaccard(simProductA, simProductB)}
+              className="btn btn-primary"
+              style={{ marginTop: '12px', background: 'var(--primary)' }}
+            >
+              Calculate Jaccard Score
+            </button>
+
+            {jaccardResult && (
+              <div style={{
+                marginTop: '12px',
+                padding: '10px',
+                backgroundColor: 'rgba(7, 10, 18, 0.5)',
+                border: '1px solid var(--border-color)',
+                borderRadius: '6px'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', fontWeight: '600' }}>
+                  <span>Jaccard Score:</span>
+                  <span style={{ color: 'var(--secondary)' }}>{(jaccardResult.score * 100).toFixed(1)}%</span>
+                </div>
+                <div style={{ fontSize: '11px', marginTop: '8px', color: 'var(--text-secondary)' }}>
+                  <div style={{ wordBreak: 'break-all' }}><strong>Intersection:</strong> {jaccardResult.intersection.length > 0 ? jaccardResult.intersection.join(', ') : 'None'}</div>
+                  <div style={{ marginTop: '4px', wordBreak: 'break-all' }}><strong>Union:</strong> {jaccardResult.union.join(', ')}</div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Cart items visualizer mockup */}
