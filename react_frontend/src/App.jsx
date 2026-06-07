@@ -480,23 +480,23 @@ export default function App() {
         
         // Populate standard catalog from recommended endpoints
         setProducts([
-          { id: "P101", title: "Wireless Noise-Canceling Headphones", category: "Electronics", tags: ["wireless", "audio", "noise-canceling", "bluetooth", "premium"] },
-          { id: "P102", title: "Mechanical Gaming Keyboard", category: "Electronics", tags: ["gaming", "keyboard", "rgb", "wired", "mechanical"] },
-          { id: "P103", title: "Ergonomic Wireless Mouse", category: "Electronics", tags: ["wireless", "mouse", "ergonomic", "bluetooth", "office"] },
-          { id: "P104", title: "Ultra-Wide Gaming Monitor 34-inch", category: "Electronics", tags: ["gaming", "monitor", "ultrawide", "display", "4k"] },
-          { id: "P105", title: "USB-C Portable Power Bank", category: "Electronics", tags: ["portable", "power", "usb-c", "charger", "travel"] },
-          { id: "P201", title: "Slim-Fit Denim Jeans", category: "Fashion", tags: ["denim", "jeans", "slim-fit", "casual", "apparel"] },
-          { id: "P202", title: "Water-Resistant Windbreaker Jacket", category: "Fashion", tags: ["jacket", "water-resistant", "windbreaker", "outerwear", "travel"] },
-          { id: "P203", title: "Classic White Leather Sneakers", category: "Fashion", tags: ["sneakers", "leather", "casual", "footwear", "white"] },
-          { id: "P204", title: "Runners Athletic Sports Shoes", category: "Fashion", tags: ["shoes", "running", "athletic", "footwear", "breathable"] },
-          { id: "P205", title: "Stainless Steel Minimalist Watch", category: "Fashion", tags: ["watch", "minimalist", "accessory", "steel", "analog"] },
-          { id: "P301", title: "Data Structures & Algorithms Made Easy", category: "Books", tags: ["dsa", "programming", "education", "textbook", "algorithms"] },
-          { id: "P302", title: "The Pragmatic Programmer", category: "Books", tags: ["programming", "career", "best-seller", "software", "development"] },
-          { id: "P303", title: "Introduction to Artificial Intelligence", category: "Books", tags: ["ai", "machine-learning", "textbook", "python", "education"] },
-          { id: "P304", title: "Atomic Habits", category: "Books", tags: ["self-help", "best-seller", "habits", "productivity", "psychology"] },
-          { id: "P401", title: "Programmable Espresso Machine", category: "Home & Kitchen", tags: ["espresso", "coffee", "machine", "kitchen", "premium"] },
-          { id: "P402", title: "High-Speed Countertop Blender", category: "Home & Kitchen", tags: ["blender", "smoothie", "juicer", "kitchen", "appliance"] },
-          { id: "P403", title: "Electric Gooseneck Kettle", category: "Home & Kitchen", tags: ["kettle", "electric", "tea", "coffee", "kitchen"] }
+          { id: "P101", title: "Wireless Noise-Canceling Headphones", category: "Electronics", price: 199.99, rating: 4.7, tags: ["wireless", "audio", "noise-canceling", "bluetooth", "premium"] },
+          { id: "P102", title: "Mechanical Gaming Keyboard", category: "Electronics", price: 89.99, rating: 4.5, tags: ["gaming", "keyboard", "rgb", "wired", "mechanical"] },
+          { id: "P103", title: "Ergonomic Wireless Mouse", category: "Electronics", price: 49.99, rating: 4.3, tags: ["wireless", "mouse", "ergonomic", "bluetooth", "office"] },
+          { id: "P104", title: "Ultra-Wide Gaming Monitor 34-inch", category: "Electronics", price: 449.99, rating: 4.8, tags: ["gaming", "monitor", "ultrawide", "display", "4k"] },
+          { id: "P105", title: "USB-C Portable Power Bank", category: "Electronics", price: 29.99, rating: 4.4, tags: ["portable", "power", "usb-c", "charger", "travel"] },
+          { id: "P201", title: "Slim-Fit Denim Jeans", category: "Fashion", price: 59.99, rating: 4.1, tags: ["denim", "jeans", "slim-fit", "casual", "apparel"] },
+          { id: "P202", title: "Water-Resistant Windbreaker Jacket", category: "Fashion", price: 79.99, rating: 4.6, tags: ["jacket", "water-resistant", "windbreaker", "outerwear", "travel"] },
+          { id: "P203", title: "Classic White Leather Sneakers", category: "Fashion", price: 69.99, rating: 4.2, tags: ["sneakers", "leather", "casual", "footwear", "white"] },
+          { id: "P204", title: "Runners Athletic Sports Shoes", category: "Fashion", price: 89.99, rating: 4.5, tags: ["shoes", "running", "athletic", "footwear", "breathable"] },
+          { id: "P205", title: "Stainless Steel Minimalist Watch", category: "Fashion", price: 129.99, rating: 4.4, tags: ["watch", "minimalist", "accessory", "steel", "analog"] },
+          { id: "P301", title: "Data Structures & Algorithms Made Easy", category: "Books", price: 34.99, rating: 4.9, tags: ["dsa", "programming", "education", "textbook", "algorithms"] },
+          { id: "P302", title: "The Pragmatic Programmer", category: "Books", price: 39.99, rating: 4.9, tags: ["programming", "career", "best-seller", "software", "development"] },
+          { id: "P303", title: "Introduction to Artificial Intelligence", category: "Books", price: 49.99, rating: 4.6, tags: ["ai", "machine-learning", "textbook", "python", "education"] },
+          { id: "P304", title: "Atomic Habits", category: "Books", price: 16.99, rating: 4.8, tags: ["self-help", "best-seller", "habits", "productivity", "psychology"] },
+          { id: "P401", title: "Programmable Espresso Machine", category: "Home & Kitchen", price: 249.99, rating: 4.7, tags: ["espresso", "coffee", "machine", "kitchen", "premium"] },
+          { id: "P402", title: "High-Speed Countertop Blender", category: "Home & Kitchen", price: 99.99, rating: 4.3, tags: ["blender", "smoothie", "juicer", "kitchen", "appliance"] },
+          { id: "P403", title: "Electric Gooseneck Kettle", category: "Home & Kitchen", price: 54.99, rating: 4.5, tags: ["kettle", "electric", "tea", "coffee", "kitchen"] }
         ]);
 
         // Setup base purchases layout links for network graph
