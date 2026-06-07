@@ -444,6 +444,16 @@ export default function App() {
   const [simProductB, setSimProductB] = useState("P103");
   const [jaccardResult, setJaccardResult] = useState(null);
 
+  // Manage user carts locally in frontend state
+  const [userCarts, setUserCarts] = useState({
+    U001: ["P103"],
+    U002: ["P102"],
+    U003: ["P302"],
+    U004: [],
+    U005: ["P403"],
+    U006: ["P203"]
+  });
+
   // Logging lines state
   const [logs, setLogs] = useState([
     { text: "Welcome to the FastAPI + React Recommendation Engine!", type: "sys" },
@@ -582,6 +592,55 @@ export default function App() {
     });
     
     addLog(`Calculated Jaccard similarity between [${pidA}] and [${pidB}] = ${score.toFixed(4)}`, "alg");
+  };
+
+  const removeFromCart = (pid) => {
+    setUserCarts(prev => {
+      const currentCart = prev[activeUserId] || [];
+      return {
+        ...prev,
+        [activeUserId]: currentCart.filter(item => item !== pid)
+      };
+    });
+    const p = products.find(prod => prod.id === pid);
+    addLog(`Removed item [${pid}] (${p ? p.title : ''}) from cart.`, "sys");
+  };
+
+  const addToCart = (pid) => {
+    const currentCart = userCarts[activeUserId] || [];
+    if (currentCart.includes(pid)) {
+      addLog(`Item [${pid}] is already in the cart.`, "sys");
+      return;
+    }
+    
+    setUserCarts(prev => ({
+      ...prev,
+      [activeUserId]: [...(prev[activeUserId] || []), pid]
+    }));
+    
+    const p = products.find(prod => prod.id === pid);
+    addLog(`Added item [${pid}] (${p ? p.title : ''}) to cart.`, "ok");
+  };
+
+  const checkoutCart = () => {
+    const currentCart = userCarts[activeUserId] || [];
+    if (currentCart.length === 0) return;
+
+    const newPurchases = [...purchases];
+    currentCart.forEach(pid => {
+      if (!newPurchases.some(link => link.user_id === activeUserId && link.item_id === pid)) {
+        newPurchases.push({ user_id: activeUserId, item_id: pid });
+      }
+      addLog(`Dynamic link added to purchase graph: User [${activeUserId}] -> Item [${pid}]`, "ok");
+    });
+    setPurchases(newPurchases);
+
+    setUserCarts(prev => ({
+      ...prev,
+      [activeUserId]: []
+    }));
+
+    addLog(`Checked out ${currentCart.length} items. Purchase adjacency graph updated dynamically!`, "ok");
   };
 
   return (
@@ -737,12 +796,83 @@ export default function App() {
             )}
           </div>
 
-          {/* Cart items visualizer mockup */}
+          {/* Active Shopping Cart */}
           <div className="glass-card">
             <h3 className="card-title"><ShoppingCart size={15} /> Active Shopping Cart</h3>
-            <p style={{ fontStyle: 'italic', fontSize: '12px', color: 'var(--text-muted)', textAlign: 'center', padding: '10px' }}>
-              Cart is currently empty.
-            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '150px', overflowY: 'auto' }}>
+              {(!userCarts[activeUserId] || userCarts[activeUserId].length === 0) ? (
+                <p style={{ fontStyle: 'italic', fontSize: '12px', color: 'var(--text-muted)', textAlign: 'center', padding: '10px' }}>
+                  Cart is currently empty.
+                </p>
+              ) : (
+                userCarts[activeUserId].map((pid, idx) => {
+                  const p = products.find(prod => prod.id === pid);
+                  if (!p) return null;
+                  return (
+                    <div 
+                      key={idx} 
+                      style={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center',
+                        backgroundColor: 'rgba(7, 10, 18, 0.4)',
+                        padding: '6px 10px',
+                        borderRadius: '4px',
+                        fontSize: '12px'
+                      }}
+                    >
+                      <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '160px' }}>
+                        {p.title}
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ fontWeight: '600', color: 'var(--text-secondary)' }}>${p.price.toFixed(2)}</span>
+                        <button 
+                          onClick={() => removeFromCart(pid)}
+                          style={{
+                            background: 'transparent',
+                            border: 'none',
+                            color: 'var(--accent)',
+                            cursor: 'pointer',
+                            fontSize: '12px',
+                            fontWeight: '700',
+                            padding: '0 2px'
+                          }}
+                          title="Remove item"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            {userCarts[activeUserId] && userCarts[activeUserId].length > 0 && (
+              <div style={{ marginTop: '12px', borderTop: '1px solid var(--border-color)', paddingTop: '10px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: '600', fontSize: '13px' }}>
+                  <span>Total Value:</span>
+                  <span style={{ color: '#fbbf24' }}>
+                    ${userCarts[activeUserId]
+                      .reduce((total, pid) => total + (products.find(p => p.id === pid)?.price || 0), 0)
+                      .toFixed(2)}
+                  </span>
+                </div>
+                <button 
+                  onClick={checkoutCart}
+                  className="btn"
+                  style={{
+                    marginTop: '10px',
+                    background: 'var(--secondary)',
+                    color: 'white',
+                    fontSize: '12px',
+                    padding: '6px 12px'
+                  }}
+                >
+                  💳 Checkout & Update Graph
+                </button>
+              </div>
+            )}
           </div>
         </section>
 
@@ -822,6 +952,19 @@ export default function App() {
                             {isExplore ? "e-Greedy" : "LightGBM"}
                           </span>
                         </div>
+                        <button 
+                          onClick={() => addToCart(item.id)}
+                          className="btn btn-primary"
+                          style={{
+                            marginTop: '8px',
+                            fontSize: '11px',
+                            padding: '4px 8px',
+                            background: 'var(--primary)',
+                            width: '100%'
+                          }}
+                        >
+                          🛒 Add to Cart
+                        </button>
                       </div>
                     </div>
                   </div>
