@@ -301,9 +301,36 @@ function GraphCanvas({ activeUserId, products, purchases }) {
    ========================================================================== */
 function HeapCanvas({ heapData }) {
   const canvasRef = useRef(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
+  // Handle Resize and capture parent container dimensions
+  useEffect(() => {
+    const handleResize = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const p = canvas.parentElement;
+      setDimensions({
+        width: p.clientWidth,
+        height: p.clientHeight || 350
+      });
+    };
+    
+    // Initial calculation after mount
+    setTimeout(handleResize, 50); // Small timeout to ensure DOM layout is completed
+    
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Drawing logic triggered on heap data changes OR dimension changes
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas || dimensions.width === 0) return;
+
+    // Setting width & height directly resets canvas context (clears previous draw)
+    canvas.width = dimensions.width;
+    canvas.height = dimensions.height;
+
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -384,21 +411,7 @@ function HeapCanvas({ heapData }) {
 
     drawNode(0, canvas.width / 2, startY, canvas.width / 2.5);
 
-  }, [heapData]);
-
-  // Resize listener
-  useEffect(() => {
-    const handleResize = () => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const p = canvas.parentElement;
-      canvas.width = p.clientWidth;
-      canvas.height = p.clientHeight || 400;
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [heapData, dimensions]);
 
   return (
     <div className="canvas-wrapper">
@@ -406,6 +419,7 @@ function HeapCanvas({ heapData }) {
     </div>
   );
 }
+
 
 /* ==========================================================================
    MAIN SYSTEM APP
