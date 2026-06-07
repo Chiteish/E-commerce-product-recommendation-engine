@@ -291,7 +291,8 @@ body {
 }
 
 .canvas-container {
-  flex: 1;
+  height: 350px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -322,7 +323,8 @@ body {
 .recs-grid-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
 }
 
 .recs-header {
