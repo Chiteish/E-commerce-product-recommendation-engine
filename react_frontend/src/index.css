@@ -150,6 +150,8 @@ body {
   flex-direction: column;
   height: 100%;
   gap: 12px;
+  overflow-y: auto;
+  padding-right: 6px;
 }
 
 /* Cards & Styling */
@@ -323,11 +325,7 @@ body {
 .recs-grid-container {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding-bottom: 16px;
-  padding-right: 4px;
+  padding-bottom: 32px;
 }
 
 .recs-header {
